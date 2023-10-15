@@ -1,0 +1,60 @@
+version: '3.7'
+services:
+  mongodb1:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    networks:
+      - mongo-network
+    command: --replSet rs0
+
+  mongodb2:
+    image: mongo
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    networks:
+      - mongo-network
+    command: --replSet rs0
+
+  mongodb3:
+    image: mongo
+    ports:
+      - "27019:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    networks:
+      - mongo-network
+    command: --replSet rs0
+
+  setup:
+    image: mongo
+    depends_on:
+      - mongodb1
+      - mongodb2
+      - mongodb3
+    networks:
+      - mongo-network
+    entrypoint: >
+      bash -c "
+      sleep 10;
+      mongo mongodb1:27017/admin --eval '
+      rs.initiate({
+        _id: \"rs0\",
+        members: [
+          { _id: 0, host: \"mongodb1:27017\" },
+          { _id: 1, host: \"mongodb2:27017\" },
+          { _id: 2, host: \"mongodb3:27017\" }
+        ]
+      })'
+      "
+
+networks:
+  mongo-network:
+    driver: bridge
