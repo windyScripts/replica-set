@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 
-dotenv.config();
 
 class Database {
-    constructor(database = `mongodb://${DB_NAME}:${DB_PASSWORD}@${env.DB_Entries.join(',')}/replicaTest`
+    constructor(database = `mongodb://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@${process.env.DB_ENTRIES}/replicaTest`
         ){
         this.connectionString = database;
     }

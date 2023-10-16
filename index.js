@@ -2,14 +2,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import Db from './db'
+import Db from './db.js'
 
 import express from 'express';
-import testRoutes from './routes/testRoute'
+import testRoutes from './routes/testRoute.js'
 
 class Server {
     app = express();
-    port = env.PORT;
+    port = process.env.PORT;
     db;
     server;
 

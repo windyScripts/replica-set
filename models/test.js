@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-testSchema = new Schema({
+const testSchema = new Schema({
   entry: {
     type: String,
     required: true,
